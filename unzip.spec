@@ -1,6 +1,6 @@
 Name:           unzip
 Version:        6.0
-Release:        14
+Release:        15
 License:        BSD-3-Clause
 Summary:        Utility for extracting zip archives
 Url:            http://www.info-zip.org
@@ -12,6 +12,8 @@ Patch2:         cve-2014-8141.patch
 Patch3:         cve-2014-9636.patch
 Patch4:         cve-2015-7696.patch
 Patch5:         cve-2015-7697.patch
+Patch6:         cve-2016-9844.patch
+Patch7:         cve-2014-9913.patch
 
 BuildRequires:  bzip2-dev
 
@@ -33,6 +35,8 @@ Utility for extracting zip archives.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%patch6 -p1
+%patch7 -p1
 
 %build
 export CFLAGS="%{optflags}"
