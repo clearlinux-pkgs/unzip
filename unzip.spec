@@ -42,6 +42,11 @@ Utility for extracting zip archives.
 export CFLAGS="%{optflags}"
 # avoid stripping binaries
 sed -i 's/\(LFLAGS2=\)"-s"/\1/' unix/configure
+# Makefile calls configure which modifies some of the flags and the default
+# flags are not being used. Passing CFLAGS here would enable the default flags
+# at a later point.
+export DEFAULTFLAGS="${CFLAGS}"
+sed -i 's/\(CFLAGSR="\${CFLAGSR} \${CFLAGS_OPT}\)"/\1 ${DEFAULTFLAGS}"/' unix/configure
 make -f unix/Makefile STRIP="" generic
 
 %install
