@@ -1,6 +1,6 @@
 Name:           unzip
 Version:        6.0
-Release:        17
+Release:        18
 License:        BSD-3-Clause
 Summary:        Utility for extracting zip archives
 Url:            http://www.info-zip.org
