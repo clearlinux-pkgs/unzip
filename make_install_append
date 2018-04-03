@@ -1,0 +1,3 @@
+mkdir -p %{buildroot}/usr/share/man
+mv %{buildroot}/usr/man/*  %{buildroot}/usr/share/man/
+rmdir %{buildroot}%{_prefix}/man/

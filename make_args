@@ -1,0 +1,1 @@
+-f unix/Makefile STRIP="" generic
