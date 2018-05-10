@@ -4,7 +4,7 @@
 #
 Name     : unzip
 Version  : 1
-Release  : 20
+Release  : 21
 URL      : ftp://ftp.info-zip.org/pub/infozip/src/unzip60.tgz
 Source0  : ftp://ftp.info-zip.org/pub/infozip/src/unzip60.tgz
 Summary  : No detailed summary available
