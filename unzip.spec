@@ -4,15 +4,16 @@
 #
 Name     : unzip
 Version  : 1
-Release  : 23
-URL      : ftp://ftp.info-zip.org/pub/infozip/src/unzip60.tgz
-Source0  : ftp://ftp.info-zip.org/pub/infozip/src/unzip60.tgz
+Release  : 24
+URL      : https://cfhcable.dl.sourceforge.net/project/infozip/UnZip%206.x%20%28latest%29/UnZip%206.0/unzip60.tar.gz
+Source0  : https://cfhcable.dl.sourceforge.net/project/infozip/UnZip%206.x%20%28latest%29/UnZip%206.0/unzip60.tar.gz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : BSD-3-Clause
-Requires: unzip-bin
-Requires: unzip-doc
-BuildRequires : qtbase-dev
+Requires: unzip-bin = %{version}-%{release}
+Requires: unzip-license = %{version}-%{release}
+Requires: unzip-man = %{version}-%{release}
+BuildRequires : buildreq-qmake
 # Suppress stripping binaries
 %define __strip /bin/true
 %define debug_package %{nil}
@@ -25,6 +26,7 @@ Patch6: cve-2015-7697.patch
 Patch7: cve-2016-9844.patch
 Patch8: cve-2014-9913.patch
 Patch9: cve-2018-1000035.patch
+Patch10: CVE-2018-18384.patch
 
 %description
 Info-ZIP group's portable UnZip zipfile-extraction program (and related
@@ -33,17 +35,27 @@ utilities).
 %package bin
 Summary: bin components for the unzip package.
 Group: Binaries
+Requires: unzip-license = %{version}-%{release}
+Requires: unzip-man = %{version}-%{release}
 
 %description bin
 bin components for the unzip package.
 
 
-%package doc
-Summary: doc components for the unzip package.
-Group: Documentation
+%package license
+Summary: license components for the unzip package.
+Group: Default
 
-%description doc
-doc components for the unzip package.
+%description license
+license components for the unzip package.
+
+
+%package man
+Summary: man components for the unzip package.
+Group: Default
+
+%description man
+man components for the unzip package.
 
 
 %prep
@@ -57,28 +69,32 @@ doc components for the unzip package.
 %patch7 -p1
 %patch8 -p1
 %patch9 -p1
+%patch10 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1522794460
-export CFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs "
-export FCFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs "
-export FFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs "
-export CXXFLAGS="$CXXFLAGS -fstack-protector-strong -mzero-caller-saved-regs "
+export SOURCE_DATE_EPOCH=1549478389
+export CFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FCFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
+export CXXFLAGS="$CXXFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
 make  %{?_smp_mflags} -f unix/Makefile STRIP="" generic
 
+
 %install
-export SOURCE_DATE_EPOCH=1522794460
+export SOURCE_DATE_EPOCH=1549478389
 rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/share/package-licenses/unzip
+cp LICENSE %{buildroot}/usr/share/package-licenses/unzip/LICENSE
 make || make -f unix/Makefile install prefix=%{buildroot}/usr
-## make_install_append content
+## install_append content
 mkdir -p %{buildroot}/usr/share/man
 mv %{buildroot}/usr/man/*  %{buildroot}/usr/share/man/
 rmdir %{buildroot}%{_prefix}/man/
-## make_install_append end
+## install_append end
 
 %files
 %defattr(-,root,root,-)
@@ -91,6 +107,14 @@ rmdir %{buildroot}%{_prefix}/man/
 /usr/bin/zipgrep
 /usr/bin/zipinfo
 
-%files doc
-%defattr(-,root,root,-)
-%doc /usr/share/man/man1/*
+%files license
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/unzip/LICENSE
+
+%files man
+%defattr(0644,root,root,0755)
+/usr/share/man/man1/funzip.1
+/usr/share/man/man1/unzip.1
+/usr/share/man/man1/unzipsfx.1
+/usr/share/man/man1/zipgrep.1
+/usr/share/man/man1/zipinfo.1
