@@ -1,0 +1,2 @@
+Double check version in .spec.
+autospec tends to set version to an unexpected value in this case.
