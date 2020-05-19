@@ -1,0 +1,26 @@
+From 2913e754d2dadb0d5531d972ea6e892ec0b7e1e5 Mon Sep 17 00:00:00 2001
+From: Auke Kok <auke-jan.h.kok@intel.com>
+Date: Tue, 19 May 2020 10:51:42 -0700
+Subject: [PATCH] Don't test for, and use, lchmod().
+
+---
+ unix/configure | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/unix/configure b/unix/configure
+index 785d8dd..887b05d 100755
+--- a/unix/configure
++++ b/unix/configure
+@@ -391,8 +391,7 @@ done
+ echo 'Check for lchmod'
+ temp_file="/tmp/unzip_test_$$"
+ temp_link="link_$$"
+-( echo '#include <unistd.h>' ; \
+-  echo "int main() { lchmod(\"${temp_file}\", 0666); }" \
++( echo '#error dont_test_for_lchmod' \
+ ) > conftest.c
+ ln -s "${temp_link}" "${temp_file}" && \
+  $CC $BFLAG -o conftest conftest.c >/dev/null 2>/dev/null && \
+-- 
+2.26.2
+
